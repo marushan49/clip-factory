@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="de" data-composition-variables="[
+    {&quot;id&quot;:&quot;slug&quot;,&quot;type&quot;:&quot;string&quot;,&quot;label&quot;:&quot;Slug&quot;,&quot;default&quot;:&quot;preview&quot;},
+    {&quot;id&quot;:&quot;kicker&quot;,&quot;type&quot;:&quot;string&quot;,&quot;label&quot;:&quot;Kicker&quot;,&quot;default&quot;:&quot;ARCHITEKTUR / 01&quot;},
+    {&quot;id&quot;:&quot;hookLead&quot;,&quot;type&quot;:&quot;string&quot;,&quot;label&quot;:&quot;Hook oben&quot;,&quot;default&quot;:&quot;DER EIFFELTURM&quot;},
+    {&quot;id&quot;:&quot;hookAccent&quot;,&quot;type&quot;:&quot;string&quot;,&quot;label&quot;:&quot;Hook Akzent&quot;,&quot;default&quot;:&quot;WÄCHST IM SOMMER.&quot;},
+    {&quot;id&quot;:&quot;setup&quot;,&quot;type&quot;:&quot;string&quot;,&quot;label&quot;:&quot;Setup&quot;,&quot;default&quot;:&quot;Hitze dehnt das Eisen aus. Nicht theoretisch — messbar.&quot;},
+    {&quot;id&quot;:&quot;reveal&quot;,&quot;type&quot;:&quot;string&quot;,&quot;label&quot;:&quot;Reveal&quot;,&quot;default&quot;:&quot;BIS ZU 15 CM&quot;},
+    {&quot;id&quot;:&quot;proof&quot;,&quot;type&quot;:&quot;string&quot;,&quot;label&quot;:&quot;Einordnung&quot;,&quot;default&quot;:&quot;So viel höher kann die Spitze an sehr warmen Tagen stehen.&quot;},
+    {&quot;id&quot;:&quot;close&quot;,&quot;type&quot;:&quot;string&quot;,&quot;label&quot;:&quot;Schluss&quot;,&quot;default&quot;:&quot;Ein 330 Meter hohes Thermometer aus Eisen.&quot;},
+    {&quot;id&quot;:&quot;loop&quot;,&quot;type&quot;:&quot;string&quot;,&quot;label&quot;:&quot;Loop&quot;,&quot;default&quot;:&quot;Und im Winter? Rückwärts.&quot;},
+    {&quot;id&quot;:&quot;episode&quot;,&quot;type&quot;:&quot;string&quot;,&quot;label&quot;:&quot;Episode&quot;,&quot;default&quot;:&quot;FELDNOTIZ 001&quot;},
+    {&quot;id&quot;:&quot;accent&quot;,&quot;type&quot;:&quot;color&quot;,&quot;label&quot;:&quot;Akzentfarbe&quot;,&quot;default&quot;:&quot;#ff5a36&quot;},
+    {&quot;id&quot;:&quot;voiceover&quot;,&quot;type&quot;:&quot;string&quot;,&quot;label&quot;:&quot;Voiceover&quot;,&quot;default&quot;:&quot;assets/silence.wav&quot;}
+  ]">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=1080, height=1920">
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <style>
+      :root {
+        --ink: #f3f0e8;
+        --paper: #12110f;
+        --muted: #a6a095;
+        --accent: #ff5a36;
+      }
+
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      html,
+      body {
+        width: 1080px;
+        height: 1920px;
+        overflow: hidden;
+        background: var(--paper);
+      }
+
+      body {
+        color: var(--ink);
+        font-family: "IBM Plex Mono", monospace;
+      }
+
+      #root {
+        position: relative;
+        width: 1080px;
+        height: 1920px;
+        overflow: hidden;
+        background: var(--paper);
+      }
+
+      .clip {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+      }
+
+      .backdrop {
+        overflow: hidden;
+        background:
+          radial-gradient(circle at 82% 18%, color-mix(in srgb, var(--accent) 24%, transparent) 0, transparent 34%),
+          radial-gradient(circle at 10% 78%, rgba(243, 240, 232, 0.08) 0, transparent 32%),
+          var(--paper);
+      }
+
+      .grain {
+        position: absolute;
+        inset: -80px;
+        opacity: 0.16;
+        background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.86' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.38'/%3E%3C/svg%3E");
+      }
+
+      .grid {
+        position: absolute;
+        inset: 74px;
+        border: 3px solid rgba(243, 240, 232, 0.2);
+      }
+
+      .grid::before,
+      .grid::after {
+        content: "";
+        position: absolute;
+        background: rgba(243, 240, 232, 0.16);
+      }
+
+      .grid::before {
+        top: 0;
+        bottom: 0;
+        left: 68%;
+        width: 2px;
+      }
+
+      .grid::after {
+        top: 22%;
+        right: 0;
+        left: 0;
+        height: 2px;
+      }
+
+      .frame-meta {
+        position: absolute;
+        top: 104px;
+        right: 104px;
+        left: 104px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        color: var(--muted);
+        font-size: 25px;
+        font-weight: 700;
+        letter-spacing: 0.09em;
+      }
+
+      .status-dot {
+        display: inline-block;
+        width: 16px;
+        height: 16px;
+        margin-right: 14px;
+        border-radius: 50%;
+        background: var(--accent);
+      }
+
+      .scene-pad {
+        position: absolute;
+        inset: 0;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        padding: 150px 104px 190px;
+      }
+
+      .eyebrow {
+        margin-bottom: 34px;
+        color: var(--accent);
+        font-size: 27px;
+        font-weight: 700;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+      }
+
+      .display {
+        max-width: 900px;
+        font-family: "League Gothic", sans-serif;
+        font-size: 178px;
+        font-weight: 400;
+        line-height: 0.86;
+        letter-spacing: -0.025em;
+        text-transform: uppercase;
+      }
+
+      .display.accent {
+        color: var(--accent);
+      }
+
+      .body-copy {
+        max-width: 860px;
+        font-size: 58px;
+        font-weight: 700;
+        line-height: 1.13;
+        letter-spacing: -0.035em;
+      }
+
+      .rule {
+        width: 100%;
+        height: 6px;
+        margin: 52px 0 38px;
+        background: var(--accent);
+        transform-origin: left center;
+      }
+
+      .proof {
+        max-width: 780px;
+        color: var(--muted);
+        font-size: 36px;
+        line-height: 1.32;
+      }
+
+      .reveal-stage {
+        position: absolute;
+        inset: 0;
+        display: grid;
+        place-items: center;
+      }
+
+      .reveal-glow {
+        position: absolute;
+        z-index: 1;
+        width: 830px;
+        height: 830px;
+        border-radius: 50%;
+        background: radial-gradient(circle, color-mix(in srgb, var(--accent) 38%, transparent), transparent 66%);
+      }
+
+      .reveal-card {
+        position: relative;
+        z-index: 2;
+        width: 880px;
+        min-height: 720px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        padding: 70px 64px;
+        border: 4px solid var(--ink);
+        background: rgba(18, 17, 15, 0.88);
+      }
+
+      .reveal-number {
+        color: var(--accent);
+        font-family: "League Gothic", sans-serif;
+        font-size: 218px;
+        font-weight: 400;
+        line-height: 0.88;
+        letter-spacing: -0.02em;
+        text-transform: uppercase;
+      }
+
+      .reveal-copy {
+        font-size: 39px;
+        font-weight: 700;
+        line-height: 1.26;
+      }
+
+      .close-scene .scene-pad {
+        justify-content: flex-end;
+      }
+
+      .close-copy {
+        max-width: 870px;
+        font-family: "League Gothic", sans-serif;
+        font-size: 152px;
+        line-height: 0.91;
+        letter-spacing: -0.02em;
+        text-transform: uppercase;
+      }
+
+      .loop-pill {
+        align-self: flex-start;
+        margin-top: 54px;
+        padding: 22px 28px 18px;
+        border: 3px solid var(--accent);
+        color: var(--accent);
+        font-size: 29px;
+        font-weight: 700;
+        letter-spacing: -0.02em;
+      }
+
+      .progress {
+        position: absolute;
+        right: 104px;
+        bottom: 106px;
+        left: 104px;
+        height: 7px;
+        background: rgba(243, 240, 232, 0.18);
+      }
+
+      .progress > span {
+        display: block;
+        width: 100%;
+        height: 100%;
+        background: var(--accent);
+        transform-origin: left center;
+      }
+
+      .corner {
+        position: absolute;
+        width: 34px;
+        height: 34px;
+        border-color: var(--accent);
+      }
+
+      .corner.a {
+        top: 58px;
+        left: 58px;
+        border-top: 5px solid var(--accent);
+        border-left: 5px solid var(--accent);
+      }
+
+      .corner.b {
+        right: 58px;
+        bottom: 58px;
+        border-right: 5px solid var(--accent);
+        border-bottom: 5px solid var(--accent);
+      }
+    </style>
+  </head>
+  <body>
+    <main data-hf-id="hf-5n4c" id="root" data-composition-id="main" data-start="0" data-duration="22" data-fps="30" data-width="1080" data-height="1920">
+      <div data-hf-id="hf-ldfs" id="persistent-backdrop" class="clip backdrop" data-start="0" data-duration="22" data-track-index="0">
+        <div data-hf-id="hf-hmx4" class="grain" id="grain"></div>
+        <div data-hf-id="hf-oozy" class="grid" id="grid"></div>
+        <div data-hf-id="hf-kvzi" class="corner a"></div>
+        <div data-hf-id="hf-gxvh" class="corner b"></div>
+        <div data-hf-id="hf-601r" class="frame-meta">
+          <span data-hf-id="hf-uckh"><i data-hf-id="hf-pwto" class="status-dot"></i><span data-hf-id="hf-nwqm" data-var-text="episode">FELDNOTIZ 001</span></span>
+          <span data-hf-id="hf-rwwp">22.0 SEC / 9:16</span>
+        </div>
+        <div data-hf-id="hf-31j5" class="progress"><span data-hf-id="hf-9bxf" id="progress-fill"></span></div>
+      </div>
+
+      <section data-hf-id="hf-axj1" id="hook-scene" class="clip" data-start="0" data-duration="4.4" data-track-index="1">
+        <div data-hf-id="hf-f1lc" class="scene-pad">
+          <p data-hf-id="hf-2amn" class="eyebrow" id="kicker" data-var-text="kicker">ARCHITEKTUR / 01</p>
+          <h1 data-hf-id="hf-9okg" class="display" id="hook-lead" data-var-text="hookLead">DER EIFFELTURM</h1>
+          <p data-hf-id="hf-x27t" class="display accent" id="hook-accent" data-var-text="hookAccent">WÄCHST IM SOMMER.</p>
+        </div>
+      </section>
+
+      <section data-hf-id="hf-aiyq" id="setup-scene" class="clip" data-start="4.4" data-duration="6" data-track-index="2">
+        <div data-hf-id="hf-pt48" class="scene-pad">
+          <p data-hf-id="hf-u961" class="eyebrow">WARUM DAS PASSIERT</p>
+          <p data-hf-id="hf-jd6j" class="body-copy" id="setup-copy" data-var-text="setup">Hitze dehnt das Eisen aus. Nicht theoretisch — messbar.</p>
+          <div data-hf-id="hf-nh6q" class="rule" id="setup-rule"></div>
+          <p data-hf-id="hf-gxj6" class="proof">01 / Temperatur steigt<br data-hf-id="hf-x5px">02 / Metall dehnt sich<br data-hf-id="hf-rsrt">03 / Die Spitze wandert</p>
+        </div>
+      </section>
+
+      <section data-hf-id="hf-xz96" id="reveal-scene" class="clip" data-start="10.4" data-duration="6.2" data-track-index="3">
+        <div data-hf-id="hf-b8y2" class="reveal-stage">
+          <div data-hf-id="hf-kb7g" class="reveal-glow" id="reveal-glow"></div>
+          <article data-hf-id="hf-xqxn" class="reveal-card" id="reveal-card">
+            <p data-hf-id="hf-k1oz" class="eyebrow">DIE MESSBARE FOLGE</p>
+            <p data-hf-id="hf-mt0o" class="reveal-number" id="reveal-number" data-var-text="reveal">BIS ZU 15 CM</p>
+            <p data-hf-id="hf-a2pj" class="reveal-copy" id="reveal-copy" data-var-text="proof">So viel höher kann die Spitze an sehr warmen Tagen stehen.</p>
+          </article>
+        </div>
+      </section>
+
+      <section data-hf-id="hf-d95u" id="close-scene" class="clip close-scene" data-start="16.6" data-duration="5.4" data-track-index="4">
+        <div data-hf-id="hf-om75" class="scene-pad">
+          <p data-hf-id="hf-atbv" class="eyebrow">MERKSATZ</p>
+          <p data-hf-id="hf-u3nx" class="close-copy" id="close-copy" data-var-text="close">Ein 330 Meter hohes Thermometer aus Eisen.</p>
+          <p data-hf-id="hf-j59r" class="loop-pill" id="loop-pill" data-var-text="loop">Und im Winter? Rückwärts.</p>
+        </div>
+      </section>
+
+      <audio data-hf-id="hf-bdpi" id="voiceover" src="assets/silence.wav" data-var-src="voiceover" data-start="0" data-duration="22" data-track-index="10" data-volume="1"></audio>
+    </main>
+
+    <script>
+      const vars = window.__hyperframes.getVariables();
+      const tl = gsap.timeline({ paused: true });
+
+      tl.fromTo("#grid", { opacity: 0, scale: 1.04 }, { opacity: 1, scale: 1, duration: 0.8, ease: "power2.out" }, 0);
+      tl.fromTo("#hook-lead", { x: -260, opacity: 0 }, { x: 0, opacity: 1, duration: 0.48, ease: "expo.out" }, 0.28);
+      tl.fromTo("#hook-accent", { scale: 1.35, filter: "blur(18px)", opacity: 0 }, { scale: 1, filter: "blur(0px)", opacity: 1, duration: 0.56, ease: "power4.out" }, 1.42);
+      tl.fromTo("#kicker", { y: 56, opacity: 0 }, { y: 0, opacity: 1, duration: 0.44, ease: "circ.out" }, 0.7);
+
+      tl.fromTo("#setup-copy", { y: 100, rotation: 2, opacity: 0 }, { y: 0, rotation: 0, opacity: 1, duration: 0.58, ease: "power4.out" }, 4.72);
+      tl.fromTo("#setup-rule", { scaleX: 0 }, { scaleX: 1, duration: 0.48, ease: "expo.out" }, 5.25);
+      tl.fromTo("#setup-scene .proof", { x: 120, opacity: 0 }, { x: 0, opacity: 1, duration: 0.52, ease: "circ.out" }, 5.65);
+
+      tl.fromTo("#reveal-glow", { opacity: 0, scale: 0.82 }, { opacity: 0.32, scale: 1, duration: 1.05, ease: "power2.out" }, 10.55);
+      tl.fromTo("#reveal-card", { y: 130, scale: 0.92, opacity: 0 }, { y: 0, scale: 1, opacity: 1, duration: 0.72, ease: "back.out(1.8)" }, 10.78);
+      tl.fromTo("#reveal-number", { x: -110, opacity: 0 }, { x: 0, opacity: 1, duration: 0.48, ease: "expo.out" }, 11.5);
+      tl.fromTo("#reveal-copy", { y: 60, opacity: 0 }, { y: 0, opacity: 1, duration: 0.48, ease: "circ.out" }, 12.0);
+
+      tl.fromTo("#close-copy", { x: -210, opacity: 0 }, { x: 0, opacity: 1, duration: 0.62, ease: "power4.out" }, 16.85);
+      tl.fromTo("#loop-pill", { scale: 0.72, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.5, ease: "back.out(2)" }, 18.2);
+
+      tl.fromTo("#progress-fill", { scaleX: 0 }, { scaleX: 1, duration: 22, ease: "none" }, 0);
+      tl.fromTo("#grain", { x: -12, y: 8 }, { x: 12, y: -8, duration: 5.5, yoyo: true, repeat: 2, ease: "sine.inOut" }, 0);
+
+      document.documentElement.style.setProperty("--accent", vars.accent);
+      window.__timelines["main"] = tl;
+    </script>
+  </body>
+</html>

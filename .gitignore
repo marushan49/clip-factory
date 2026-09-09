@@ -1,0 +1,13 @@
+node_modules/
+.DS_Store
+.hyperframes/
+.media/
+.thumbnails/
+.waveform-cache/
+renders/
+snapshots/
+jobs/*.json
+!jobs/example.json
+!jobs/batch.example.json
+assets/generated/
+*.log

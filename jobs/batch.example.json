@@ -1,0 +1,30 @@
+[
+  {
+    "slug": "eiffelturm-sommer",
+    "kicker": "ARCHITEKTUR / 01",
+    "hookLead": "DER EIFFELTURM",
+    "hookAccent": "WÄCHST IM SOMMER.",
+    "setup": "Hitze dehnt das Eisen aus. Nicht theoretisch — messbar.",
+    "reveal": "BIS ZU 15 CM",
+    "proof": "So viel höher kann die Spitze an sehr warmen Tagen stehen.",
+    "close": "Ein 330 Meter hohes Thermometer aus Eisen.",
+    "loop": "Und im Winter? Rückwärts.",
+    "episode": "FELDNOTIZ 001",
+    "accent": "#ff5a36",
+    "voiceover": "assets/silence.wav"
+  },
+  {
+    "slug": "flugzeugfenster",
+    "kicker": "LUFTFAHRT / 02",
+    "hookLead": "ECKIGE FENSTER",
+    "hookAccent": "WAREN EIN FEHLER.",
+    "setup": "Druck konzentrierte sich früher an den scharfen Ecken.",
+    "reveal": "RUNDE KRAFT",
+    "proof": "Eine Kurve verteilt Belastung gleichmäßiger über den Rahmen.",
+    "close": "Die Form ist kein Designtrend. Sie ist Statik.",
+    "loop": "Welche Alltagsform rettet noch Leben?",
+    "episode": "FELDNOTIZ 002",
+    "accent": "#e9b949",
+    "voiceover": "assets/silence.wav"
+  }
+]

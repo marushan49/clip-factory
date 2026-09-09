@@ -1,0 +1,24 @@
+name: ci
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Syntax and pipeline smoke test
+        run: |
+          node --check scripts/create.mjs
+          node --check scripts/render-job.mjs
+          node --check scripts/batch.mjs
+          npm run smoke
+          npm run batch -- --input jobs/batch.example.json
+      - name: HyperFrames quality gate
+        run: npm run check

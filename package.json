@@ -1,0 +1,23 @@
+{
+  "name": "clip-factory",
+  "version": "0.1.0",
+  "description": "Local-first pipeline for high-quality vertical short videos",
+  "private": true,
+  "license": "MIT",
+  "repository": "github:marushan49/clip-factory",
+  "type": "module",
+  "scripts": {
+    "dev": "npx --yes hyperframes@0.8.33 preview",
+    "check": "npx --yes hyperframes@0.8.33 check",
+    "create": "node scripts/create.mjs",
+    "render:job": "node scripts/render-job.mjs",
+    "batch": "node scripts/batch.mjs",
+    "smoke": "node scripts/create.mjs --provider template --topic 'CI smoke' --slug ci-smoke --no-tts",
+    "snapshot": "npx --yes hyperframes@0.8.33 snapshot --at 1.8,6.8,13.2,19.2 --no-end",
+    "render": "npx --yes hyperframes@0.8.33 render --resolution portrait --quality high --gpu --workers 2",
+    "publish": "npx --yes hyperframes@0.8.33 publish"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}

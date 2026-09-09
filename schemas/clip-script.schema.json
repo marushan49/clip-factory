@@ -1,0 +1,17 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["kicker", "hookLead", "hookAccent", "setup", "reveal", "proof", "close", "loop", "narration"],
+  "properties": {
+    "kicker": { "type": "string", "maxLength": 36 },
+    "hookLead": { "type": "string", "minLength": 4, "maxLength": 48 },
+    "hookAccent": { "type": "string", "minLength": 4, "maxLength": 48 },
+    "setup": { "type": "string", "minLength": 12, "maxLength": 180 },
+    "reveal": { "type": "string", "minLength": 2, "maxLength": 36 },
+    "proof": { "type": "string", "minLength": 12, "maxLength": 180 },
+    "close": { "type": "string", "minLength": 8, "maxLength": 140 },
+    "loop": { "type": "string", "minLength": 8, "maxLength": 100 },
+    "narration": { "type": "string", "minLength": 180, "maxLength": 620 }
+  }
+}
