@@ -10,4 +10,7 @@ jobs/*.json
 !jobs/example.json
 !jobs/batch.example.json
 assets/generated/
+assets/flow/*.mp4
+assets/flow/*.mov
+assets/flow/*.json
 *.log

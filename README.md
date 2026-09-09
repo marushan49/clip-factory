@@ -25,6 +25,9 @@ npm run create -- --provider template --topic "Ein überraschender Fakt" --no-tt
 
 # Rendering is an explicit step after preview
 npm run render:job -- jobs/<slug>.json
+
+# Einen aus Flow heruntergeladenen Hero-Shot importieren
+npm run import:flow -- --file ~/Downloads/flow-shot.mp4 --slug eiffel-hero --job jobs/eiffelturm-sommer.json
 ```
 
 Batch files are JSON arrays with the same fields as `jobs/example.json`:
@@ -57,6 +60,10 @@ Current official references:
 LTX-2 and larger 14B/22B generators are not sensible defaults for the Zotac's
 8GB VRAM. Cloud video APIs can be adapters later, but they destroy the near-zero
 variable-cost target when used for entire 20–40 second clips.
+
+Google Flow is now an optional B-roll backend. The exact credit plan and prompt
+patterns are in [FLOW.md](FLOW.md); the imported MP4 is always composited and
+captioned locally after download.
 
 ## Architecture
 

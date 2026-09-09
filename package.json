@@ -10,6 +10,7 @@
     "dev": "npx --yes hyperframes@0.8.33 preview",
     "check": "npx --yes hyperframes@0.8.33 check",
     "create": "node scripts/create.mjs",
+    "import:flow": "node scripts/import-flow.mjs",
     "render:job": "node scripts/render-job.mjs",
     "batch": "node scripts/batch.mjs",
     "smoke": "node scripts/create.mjs --provider template --topic 'CI smoke' --slug ci-smoke --no-tts",

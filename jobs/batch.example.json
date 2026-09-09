@@ -11,6 +11,7 @@
     "loop": "Und im Winter? Rückwärts.",
     "episode": "FELDNOTIZ 001",
     "accent": "#ff5a36",
+    "flowVideo": "assets/fallback.mp4",
     "voiceover": "assets/silence.wav"
   },
   {
@@ -25,6 +26,7 @@
     "loop": "Welche Alltagsform rettet noch Leben?",
     "episode": "FELDNOTIZ 002",
     "accent": "#e9b949",
+    "flowVideo": "assets/fallback.mp4",
     "voiceover": "assets/silence.wav"
   }
 ]

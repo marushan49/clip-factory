@@ -16,6 +16,7 @@ jobs:
       - name: Syntax and pipeline smoke test
         run: |
           node --check scripts/create.mjs
+          node --check scripts/import-flow.mjs
           node --check scripts/render-job.mjs
           node --check scripts/batch.mjs
           npm run smoke
